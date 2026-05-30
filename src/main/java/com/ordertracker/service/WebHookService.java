@@ -85,7 +85,7 @@ public class WebHookService {
 
             log.setStatus("FAILED");
             log.setResponseMessage(e.getMessage());
-//            log.setRetryCount(log.getRetryCount() + 1);
+
             log.setRetryCount(0);
 
             logger.error("Payment webhook failed for order {}", orderId, e);
@@ -125,7 +125,7 @@ public class WebHookService {
                             .orElseThrow(() ->
                                     new RuntimeException("Order not found"));
 
-            // STATUS UPDATE
+           
             order.setStatus(status);
 
             orderRepository.save(order);
@@ -145,7 +145,7 @@ public class WebHookService {
         } catch (Exception e) {
             webhookLogEntity.setStatus("FAILED");
             webhookLogEntity.setResponseMessage(e.getMessage());
-//            webhookLogEntity.setRetryCount(webhookLogEntity.getRetryCount() + 1);
+
             webhookLogEntity.setRetryCount(0);
 
             logger.error("Shipment webhook failed for order {}", orderId, e);
@@ -212,21 +212,21 @@ public void retryFailedWebhooks() {
         int retry = Optional.ofNullable(log.getRetryCount()).orElse(0);
 
 
-        // ✅ BURADA YAZILIR
+      
         if (retry >= 3) {
             log.setStatus("FAILED_FINAL");
             webHookLogRepository.save(log);
-            continue; // IMPORTANT
+            continue; 
         }
 
         try {
             log.setStatus("RETRYING");
 
-            // 🔥 BURADA SƏNİN BUSINESS LOGIC
+           
             OrderEntity order = orderRepository.findById(log.getOrderId())
                     .orElseThrow(() -> new RuntimeException("Order not found"));
 
-            // əgər order tapıldısa SUCCESS
+           
             log.setStatus("SUCCESS");
             log.setResponseMessage("Retried successfully");
 
