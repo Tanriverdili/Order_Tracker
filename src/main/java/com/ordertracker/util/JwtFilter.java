@@ -26,12 +26,12 @@ public class JwtFilter extends OncePerRequestFilter {
             FilterChain filterChain
     ) throws ServletException, IOException {
 
-<<<<<<< HEAD
+
 
         try {
-=======
+
    try {
->>>>>>> a40756c9b17193538aebe50bb5102c803bde0f82
+
 
             String authHeader = request.getHeader("Authorization");
 
